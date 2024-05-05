@@ -119,22 +119,30 @@ async function GetDataFromApi() {
             this5.innerHTML = "No synonyms found.";
 
         }
-        const phoneticAudioUrl = json[0]?.phonetics[0]?.audio; // Extract audio URL from API response
+        const phoneticAudioUrl = json[0]?.phonetics[0]?.audio;
+        console.log(phoneticAudioUrl); // Extract audio URL from API response
+        
         if (phoneticAudioUrl) {
             const audioElement = new Audio(phoneticAudioUrl); // Create new audio element
             const iconVolume = document.querySelector(".fa-volume-high");
-
+        
             // Add click event to toggle audio playback
+            let isPlaying = false; // Initially, the audio is not playing
             iconVolume.addEventListener("click", () => {
-                if (audioElement.paused) {
+                if (!isPlaying) {
                     audioElement.play(); // Play audio
+                    iconVolume.classList.remove("fa-volume-high"); // Change icon to indicate playing audio
                     iconVolume.classList.add("fa-volume-mute"); // Change icon to indicate playing audio
+                    isPlaying = true; // Update the playing status
                 } else {
                     audioElement.pause(); // Pause audio
                     iconVolume.classList.remove("fa-volume-mute"); // Change icon to indicate paused audio
+                    iconVolume.classList.add("fa-volume-high"); // Change icon to indicate paused audio
+                    isPlaying = false; // Update the playing status
                 }
             });
         }
+        
     } catch (error) {
         console.error('Error:', error);
     }
